@@ -1,0 +1,22 @@
+<p-dialog [modal]="true"
+          [header]="'category.detail' | translate"
+          [draggable]="true"
+          [(visible)]="showDetail"
+          [style]="{ width: '70%', padding:'0px' }"
+          [contentStyle]="{ 'background-color': '#f9f9f9' }"
+          [styleClass]="'custom-dialog'"
+          [closeOnEscape]="true"
+          [dismissableMask]="true"
+          [resizable]="true">
+    <div class="col-12" >
+        <generator-detail name='category' class="detail" [dataRow]="rowDetail"/>
+    </div>
+</p-dialog>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <generator-table (event)="onEvent($event)" name="category" [dataRows]="dataRows"
+                        [mapping]="categoryMapping"></generator-table>
+        </div>
+    </div>
+</div>

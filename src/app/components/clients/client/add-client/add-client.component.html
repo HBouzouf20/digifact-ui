@@ -1,0 +1,17 @@
+<div class="col-12">
+    <!-- <p-toggleButton
+    (onChange)="changeClient($event)"
+    [onLabel]="'Inconnu'"
+    [offLabel]="'Client Connu'"
+    [onIcon]="'pi pi-question-circle'"
+    offIcon="pi pi-calendar-minus"
+    styleClass="w-9rem"
+    ariaLabel="Do you confirm" />
+    @if(unkownClient) {
+    <generator-form  [model]="modelPassager" (sub)="addClient($event)" title="client" [isModal]=isModal ></generator-form>
+
+    }@else {
+
+    } -->
+    <generator-form  [model]="model" (sub)="addClient($event)" title="client" [isModal]=isModal ></generator-form>
+</div>

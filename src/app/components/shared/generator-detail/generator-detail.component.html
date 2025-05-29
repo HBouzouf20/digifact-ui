@@ -1,0 +1,7 @@
+<div *ngFor="let element of dataRow" class="col-12 md:col-6">
+  <generator-detail-attribute
+    class="detail"
+    [title]="name + '.' + element[0] | translate"
+    [value]="element[1]"
+  ></generator-detail-attribute>
+</div>

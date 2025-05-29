@@ -1,0 +1,41 @@
+<div class="layout-topbar" [ngClass]="{'border-bottom-none': layoutService.config.topbarTheme !== 'light'}">
+    <div class="layout-topbar-start">
+        <a class="layout-topbar-logo" routerLink="/">
+            <img src="/assets/layout/images/digitrack-logo.png" alt="">
+        </a>
+        <a #menuButton class="layout-menu-button" (click)="onMenuButtonClick()" pRipple>
+            <i class="pi pi-angle-right"></i>
+        </a>
+
+        <a #mobileMenuButton class="layout-topbar-mobile-button" (click)="onMobileTopbarMenuButtonClick()" pRipple>
+            <i class="pi pi-bars text-4xl"></i>
+        </a>
+    </div>
+
+    <div class="layout-topbar-end">
+        <div class="layout-topbar-actions-end">
+            <ul class="layout-topbar-items">
+
+                <li>
+                    <a pStyleClass="@next" enterClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple>
+                        <i class="pi pi-language"></i>
+                    </a>
+                    <div class="ng-hidden">
+                        <ul class="list-none p-0 m-0">
+                            <ng-container *ngFor="let lang of countries">
+                                <li>
+                                    <a (click)="selectLang(lang)" class="py-2 px-3 flex gap-2 cursor-pointer text-color hover:text-primary">
+                                        <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + lang?.code.toLowerCase()" style="width: 18px"/>
+                                        <span>{{lang?.name}}</span>
+                                    </a>
+                                </li>
+                            </ng-container>
+
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>

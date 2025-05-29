@@ -1,0 +1,17 @@
+.title {
+  height: 30px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  text-align: left;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.value {
+  padding-top: 0.75rem;
+  padding-bottom: 1rem;
+}

@@ -1,0 +1,11 @@
+export const environment = {
+  production: true,
+  hostName: '${HOST_NAME}',
+  serverUrl: '${SERVER_URL}',
+  publicHost: '${PUBLIC_HOST}',
+  uploadImageHost: '${UPLOAD_IMAGE_HOST}',
+  hostUrl: '${HOST_URL}',
+  authUrl: '${AUTH_URL}',
+  uploadPublicFiles: "${UPLOAD_PUBLIC_FILES}",
+  uploadPrivateFiles: "${UPLOAD_PRIVATE_FILES}"
+};

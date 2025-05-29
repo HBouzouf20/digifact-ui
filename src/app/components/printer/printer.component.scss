@@ -1,0 +1,48 @@
+.ticket {
+
+    padding: 10px;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .ticket-header {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .ticket-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  .ticket-footer {
+    text-align: center;
+    font-size: 15px;
+    color: #555;
+  }
+
+  @media print {
+    body, html {
+
+      margin: 0;
+      padding: 0;
+    }
+
+    .ticket {
+      padding: 0;
+    }
+
+    .ticket-footer {
+      font-size: 10px;
+    }
+
+    .no-print {
+      display: none;
+    }
+  }

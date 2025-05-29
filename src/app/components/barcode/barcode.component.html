@@ -1,0 +1,4 @@
+<div>
+    <input [(ngModel)]="text" (ngModelChange)="updateText($event)" placeholder="Enter text for barcode" />
+    <svg #barcode></svg>  <!-- This is where the barcode will be rendered -->
+</div>

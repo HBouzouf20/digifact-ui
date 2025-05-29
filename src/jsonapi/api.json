@@ -1,0 +1,459 @@
+
+  "equipments": [
+    {
+      "id": "2d20",
+      "referenceNumber": 26832,
+      "name": "Latex-Robot-001",
+      "brand": {
+        "id": "1",
+        "referenceNumber": 16341,
+        "name": "GE Healthcare"
+      },
+      "category": {
+        "id": "1",
+        "categoryID": 2023,
+        "categoryName": "Cardiology Equipment"
+      },
+      "family": {
+        "id": "2",
+        "referenceNumber": 15890,
+        "name": "Cardiology",
+        "description": "Equipment related to "
+      },
+      "certificateIssuanceDate": "16/10/2024",
+      "expirationReminderDate": "16/10/2029",
+      "manufacturingDate": "22/10/2024",
+      "certificateNumber": "CERTIF001",
+      "certificateValidityDuration": 5,
+      "model": " Germ-Zapping Robot.",
+      "numberOfInterventions": 2,
+      "serialNumber": "00814122020033",
+      "warrantyDuration": 5,
+      "imagePath": ""
+    },
+    {
+      "id": "f64d",
+      "referenceNumber": 1234344,
+      "name": "Rotex-01-rbt",
+      "brand": {
+        "id": "4",
+        "referenceNumber": 25338,
+        "name": "Medtronic"
+      },
+      "category": {
+        "id": "1",
+        "categoryID": 20233,
+        "categoryName": "Cardiology Equipment"
+      },
+      "family": {
+        "id": "2",
+        "referenceNumber": 15899,
+        "name": "Cardiology",
+        "description": "Equipment related to heart diagnostics and monitoring, including ECG machines and defibrillators."
+      },
+      "certificateIssuanceDate": "15/10/2024",
+      "expirationReminderDate": "15/10/2029",
+      "manufacturingDate": "22/10/2024",
+      "certificateNumber": "CERTIF001",
+      "certificateValidityDuration": 5,
+      "model": " Germ-Zapping Robot.",
+      "numberOfInterventions": 2,
+      "serialNumber": "DL1FRG550XHZ",
+      "warrantyDuration": 8,
+      "imagePath": ""
+    }
+  ],
+  "brands": [
+    {
+      "id": "1",
+      "referenceNumber": 16341,
+      "name": "GE Healthcare2"
+    },
+    {
+      "id": "2",
+      "referenceNumber": 20727,
+      "name": "Siemens Healthineers"
+    },
+    {
+      "id": "3",
+      "referenceNumber": 4712,
+      "name": "Philips Healthcare"
+    },
+    {
+      "id": "4",
+      "referenceNumber": 25338,
+      "name": "Medtronic"
+    },
+    {
+      "id": "5",
+      "referenceNumber": 2120,
+      "name": "Johnson & Johnson"
+    },
+    {
+      "id": "6",
+      "referenceNumber": 31750,
+      "name": "Dräger"
+    },
+    {
+      "id": "7",
+      "referenceNumber": 13576,
+      "name": "Fresenius Medical Care"
+    },
+    {
+      "id": "8",
+      "referenceNumber": 19074,
+      "name": "Boston Scientific"
+    },
+    {
+      "id": "9",
+      "referenceNumber": 12752,
+      "name": "Stryker"
+    },
+    {
+      "id": "10",
+      "referenceNumber": 31465,
+      "name": "Becton Dickinson (BD)"
+    },
+    {
+      "id": "8988",
+      "referenceNumber": 100,
+      "name": "Phillips Cardio"
+    },
+    {
+      "id": "9efe",
+      "referenceNumber": 144,
+      "name": "brand2"
+    },
+    {
+      "id": "3f73",
+      "referenceNumber": 99,
+      "name": "Siemens 2"
+    }
+  ],
+  "families": [
+    {
+      "id": "2",
+      "referenceNumber": 15890,
+      "name": "Cardiology",
+      "description": "Equipment related to "
+    },
+    {
+      "id": "3",
+      "referenceNumber": 4473,
+      "name": "Surgical Instruments",
+      "description": "Tools used during surgical procedures, including scalpels, forceps, and clamps."
+    },
+    {
+      "id": "4",
+      "referenceNumber": 10748,
+      "name": "Anesthesia",
+      "description": "Devices used for administering anesthesia and monitoring patients during surgery."
+    },
+    {
+      "id": "5",
+      "referenceNumber": 9412,
+      "name": "Laboratory Equipment",
+      "description": "Tools and machines used for conducting tests and experiments in medical laboratories."
+    },
+    {
+      "id": "6",
+      "referenceNumber": 25358,
+      "name": "Respiratory Care",
+      "description": "Equipment used to assist with breathing and respiratory functions, including ventilators and oxygen concentrators."
+    },
+    {
+      "id": "7",
+      "referenceNumber": 23216,
+      "name": "Patient Monitoring",
+      "description": "Devices used to continuously monitor patient vital signs, such as blood pressure monitors and pulse oximeters."
+    },
+    {
+      "id": "8",
+      "referenceNumber": 8192,
+      "name": "Rehabilitation Equipment",
+      "description": "Devices designed to assist in the recovery and rehabilitation of patients, including physical therapy machines and exercise equipment."
+    },
+    {
+      "id": "9",
+      "referenceNumber": 535,
+      "name": "Orthopedics",
+      "description": "Equipment related to the treatment of musculoskeletal injuries and conditions, including braces, casts, and orthopedic implants."
+    },
+    {
+      "id": "10",
+      "referenceNumber": 14954,
+      "name": "Sterilization Equipment",
+      "description": "Devices used for sterilizing medical instruments and equipment to prevent infection, including autoclaves and ultrasonic cleaners."
+    },
+    {
+      "id": "63cc",
+      "referenceNumber": 234,
+      "name": "Family1",
+      "description": "Family 1 test"
+    },
+    {
+      "id": "6e0a",
+      "referenceNumber": 60,
+      "name": "family60",
+      "description": "Family 60 test"
+    },
+    {
+      "id": "5d96",
+      "referenceNumber": 99,
+      "name": "Family1",
+      "description": "test"
+    },
+    {
+      "id": "a761",
+      "referenceNumber": 10002,
+      "name": "Family",
+      "description": "Family 1 test"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "categoryID": 2023,
+      "categoryName": "Cardiology Equipment"
+    },
+    {
+      "id": "2",
+      "categoryID": 18411,
+      "categoryName": "Diagnostic Imaging"
+    },
+    {
+      "id": "3",
+      "categoryID": 15437,
+      "categoryName": "Surgical Instruments"
+    },
+    {
+      "id": "4",
+      "categoryID": 1688,
+      "categoryName": "Anesthesia Equipment"
+    },
+    {
+      "id": "5",
+      "categoryID": 6995,
+      "categoryName": "Laboratory Equipment"
+    },
+    {
+      "id": "6",
+      "categoryID": 29178,
+      "categoryName": "Respiratory Care"
+    },
+    {
+      "id": "7",
+      "categoryID": 1761,
+      "categoryName": "Patient Monitoring"
+    },
+    {
+      "id": "8",
+      "categoryID": 13321,
+      "categoryName": "Rehabilitation Equipment"
+    },
+    {
+      "id": "9",
+      "categoryID": 31845,
+      "categoryName": "Orthopedics"
+    },
+    {
+      "id": "10",
+      "categoryID": 30095,
+      "categoryName": "Sterilization Equipment"
+    },
+    {
+      "id": "ec95",
+      "categoryID": 123,
+      "categoryName": "cat1"
+    },
+    {
+      "id": "ab9c",
+      "categoryID": 120,
+      "categoryName": "cat1"
+    },
+    {
+      "id": "ff7a",
+      "categoryID": 100,
+      "categoryName": "cat3"
+    },
+    {
+      "id": "3375",
+      "categoryID": 109,
+      "categoryName": "cat3"
+    },
+    {
+      "id": "f8b6",
+      "categoryID": 144,
+      "categoryName": "cat"
+    }
+  ],
+  "clients": [
+    {
+      "id": "4c8a",
+      "referenceNumber": 123,
+      "clientName": "Hopital Cheikh khalifa",
+      "address": "100 PLACE SEAN MAC BRIDE",
+      "contactNumber": "yes",
+      "sector": "Public"
+    },
+    {
+      "id": "7fcd",
+      "referenceNumber": 123,
+      "clientName": "Hopital Mohammed V",
+      "address": "100 PLACE SEAN MAC BRIDE",
+      "contactNumber": "yes",
+      "sector": "Private"
+    },
+    {
+      "id": "264",
+      "referenceNumber": 222,
+      "clientName": "Med7",
+      "address": "123",
+      "contactNumber": "123",
+      "sector": "Public"
+    }
+  ],
+  "client-technicians": [
+    {
+      "id": "1",
+      "name": "Khalid Belkhatir",
+      "phone": "+212 447 446 785",
+      "email": "khalid.belkhatir@gmail.com",
+      "matricule": "EMP0044"
+    },
+    {
+      "id": "2",
+      "name": "Meryem El Ayoubi",
+      "phone": "+212 100 76 4381",
+      "email": "meryem.elayoubi@gmail.com",
+      "matricule": "EMP002"
+    },
+    {
+      "id": "3",
+      "name": "Said Amrani",
+      "phone": "+212 174 599 629",
+      "email": "said.amrani@gmail.com",
+      "matricule": "EMP003"
+    },
+    {
+      "id": "4",
+      "name": "Hassan El Khamlichi",
+      "phone": "+212 231 446 907",
+      "email": "hassan.elkhamlichi@gmail.com",
+      "matricule": "EMP004"
+    },
+    {
+      "id": "5",
+      "name": "Rania El Amrani",
+      "phone": "+212 284 619 493",
+      "email": "rania.elamrani@gmail.com",
+      "matricule": "EMP005"
+    },
+    {
+      "id": "6",
+      "name": "Amina Berrada",
+      "phone": "+212 774 847 040",
+      "email": "amina.berrada@gmail.com",
+      "matricule": "EMP006"
+    },
+    {
+      "id": "7",
+      "name": "Youssef El Ouardi",
+      "phone": "+212 739 090 892",
+      "email": "youssef.elouardi@gmail.com",
+      "matricule": "EMP007"
+    },
+    {
+      "id": "8",
+      "name": "Zineb Bourrani",
+      "phone": "+212 787 502 088",
+      "email": "zineb.bourrani@gmail.com",
+      "matricule": "EMP008"
+    },
+    {
+      "id": "9",
+      "name": "Mouad El Fadili",
+      "phone": "+212 293 03 4871",
+      "email": "mouad.fadili@gmail.com",
+      "matricule": "EMP009"
+    },
+    {
+      "id": "10",
+      "name": "Nadia El Mansouri",
+      "phone": "+212 760 25 8462",
+      "email": "nadia.elmansouri@gmail.com",
+      "matricule": "EMP010"
+    },
+    {
+      "id": "6d77",
+      "phone": "0651882947",
+      "email": "bouzouf.hamza.dev@gmail.com",
+      "matricule": "HB001"
+    }
+  ],
+  "sales": [
+    {
+      "id": "523d",
+      "saleId": 150,
+      "saleDate": "2024-09-26T01:01:45.168Z",
+      "equipment": "Robot-x1",
+      "equipmentQty": 1,
+      "deliveryDate": "2024-09-26T01:01:45.168Z",
+      "salePrice": 1,
+      "totalEstimatedPrice": 1,
+      "delivered": false,
+      "client": {
+        "id": "2",
+        "referenceNumber": 31819,
+        "clientName": "Clinique Atlas",
+        "address": "Marrakech, Morocco",
+        "contactNumber": "+212 524 43 36 36"
+      }
+    },
+    {
+      "id": "2cfe",
+      "saleId": 747,
+      "saleDate": "2024-09-26T01:09:27.767Z",
+      "equipment": "Robot-x1",
+      "equipmentQty": 112,
+      "deliveryDate": "2024-09-26T01:09:27.767Z",
+      "salePrice": 2450,
+      "totalEstimatedPrice": 274400,
+      "delivered": true,
+      "client": {
+        "id": "5",
+        "referenceNumber": 28216,
+        "clientName": "Clinique Agdal",
+        "address": "Rabat, Morocco",
+        "contactNumber": "+212 537 67 12 34"
+      }
+    },
+    {
+      "id": "abbb",
+      "saleId": 10,
+      "saleDate": "2024-09-26T01:09:45.015Z",
+      "equipment": "Robot-x1",
+      "equipmentQty": 10,
+      "deliveryDate": "2024-09-29T23:00:00.000Z",
+      "salePrice": 13400,
+      "totalEstimatedPrice": 134000,
+      "delivered": false,
+      "client": {
+        "id": "2",
+        "referenceNumber": 31819,
+        "clientName": "Clinique Atlas",
+        "address": "Marrakech, Morocco",
+        "contactNumber": "+212 524 43 36 36"
+      }
+    },
+    {
+      "id": "9bb8",
+      "delivered": false,
+      "equipments": [],
+      "deliveryType": {
+        "id": 1,
+        "name": "TOTAL"
+      }
+    }
+  ]
+}

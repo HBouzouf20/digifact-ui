@@ -1,0 +1,317 @@
+<div class="grid">
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="p-3 text-white h-6rem border-round m-0 bg-center bg-cover bg-no-repeat bg-cyan-600"
+             style="background-image: url('assets/layout/images/dashboard/effect-1.svg')">
+            <div class="font-bold w-full mb-3">
+                <span>{{ translate.instant('equipments') }}</span>
+            </div>
+            <div class="text-white text-2xl font-bold w-full flex align-items-center py-1">{{ products.length }} <i
+                class="pi pi-arrow-up ml-2 font-bold"></i></div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="p-3 text-white h-6rem border-round m-0 bg-center bg-cover bg-no-repeat bg-orange-400"
+             style="background-image: url('assets/layout/images/dashboard/effect-2.svg')">
+            <div class="font-bold w-full mb-3">
+                <span>{{ translate.instant('brands') }}</span>
+            </div>
+            <div class="text-white text-2xl font-bold w-full flex align-items-center py-1">{{ brands.length }} <i
+                class="pi pi-arrow-up ml-2 font-bold"></i></div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="p-3 text-white h-6rem border-round m-0 bg-center bg-cover bg-no-repeat bg-purple-400"
+             style="background-image: url('assets/layout/images/dashboard/effect-3.svg')">
+            <div class="font-bold w-full mb-3">
+                <span>{{ translate.instant('categories') }}</span>
+            </div>
+            <div class="text-white text-2xl font-bold w-full flex align-items-center py-1">{{ categories.length }} <i
+                class="pi pi-arrow-up ml-2 font-bold"></i></div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="p-3 text-white h-6rem border-round m-0 bg-center bg-cover bg-no-repeat bg-gray-600"
+             style="background-image: url('assets/layout/images/dashboard/effect-4.svg')">
+            <div class="font-bold w-full mb-3">
+                <span>{{ translate.instant('clients') }}</span>
+            </div>
+            <div class="text-white text-2xl font-bold w-full flex align-items-center py-1">{{ clients.length }} <i
+                class="pi pi-arrow-up ml-2 font-bold"></i></div>
+        </div>
+    </div>
+
+
+    <!--<div class="col-12 lg:col-4 p-3">
+        <div class="card">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <span class="font-bold text-3xl text-color">450</span>
+                    <p class="mt-2 mb-0 text-2xl text-color-secondary">Employees</p>
+                </div>
+                <div>
+                    <img src="assets/layout/images/dashboard/stats-illustration-1.svg"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-4 p-3">
+        <div class="card">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <span class="font-bold text-3xl text-color">71K</span>
+                    <p class="mt-2 mb-0 text-2xl text-color-secondary">Total Deliveries</p>
+                </div>
+                <div>
+                    <img src="assets/layout/images/dashboard/stats-illustration-2.svg"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-4 p-3">
+        <div class="card">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <span class="font-bold text-3xl text-color">757</span>
+                    <p class="mt-2 mb-0 text-2xl text-color-secondary">Total Interventions</p>
+                </div>
+                <div>
+                    <img src="assets/layout/images/dashboard/stats-illustration-3.svg"/>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div class="col-12 lg:col-6">
+        <div class="card h-full">
+            <h5>Weekly Overview</h5>
+            <p-chart type="line" [data]="chartData" [options]="chartOptions" id="nasdaq-chart"
+                     [responsive]="true"></p-chart>
+        </div>
+    </div>
+    <!--  <div class="col-12 lg:col-6">
+          <div class="card">
+              <div class="flex align-items-center justify-content-between mb-4">
+                  <h5>Sales</h5>
+                  <div class="ml-auto">
+                      <button pButton pRipple icon="pi pi-ellipsis-v"
+                              class="p-button-text p-button-plain p-button-rounded" (click)="menu.toggle($event)"></button>
+                      <p-menu #menu [popup]="true" [model]="items"></p-menu>
+                  </div>
+              </div>
+              <div class="border-1 surface-border p-3 mb-4">
+          <span class="font-medium text-3xl text-color">{{ totalPercentage }}% <span
+              class="text-color-secondary">({{ totalSold }}/{{ totalTarget }})</span></span>
+                  <ul class="m-0 p-0 list-none mt-3 flex">
+                      <li *ngFor="let product of topProducts; let i = index" class="h-1rem flex-1"
+                          [ngClass]="colorClasses[i]"
+                          [ngStyle]="{'width': (product.quantity / totalSold * 100) + '%'}">
+                      </li>
+                  </ul>
+              </div>
+              <div class="card">
+                  <div class="flex align-items-center justify-content-between mb-4">
+                      <h5>Top 5 Products</h5>
+                  </div>
+                  <div class="border-1 surface-border p-3 mb-4">
+                      <span class="font-medium text-3xl text-color">Top Selling Products</span>
+                  </div>
+
+                  <ul class="mt-4 p-0 mx-0">
+                      <li *ngFor="let product of topProducts; let i = index" class="flex align-items-center py-3">
+                          <span class="border-round mr-3 w-1rem h-1rem" [ngClass]="colorClasses[i]"></span>
+                          <span class="text-xl font-medium text-color">{{ product.equipment.title }}</span>
+                          <span class="text-xl font-medium text-color-secondary ml-auto">{{ product.quantity }}</span>
+                      </li>
+                  </ul>
+              </div>
+
+          </div>
+      </div>-->
+
+    <div class="col-12 lg:col-6">
+        <div class="card h-full">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <h5 class="mb-0">Accounts</h5>
+                </div>
+                <!--<div class="col-6 d-flex justify-content-end">
+                    <p-floatLabel>
+                        <p-calendar
+                            [(ngModel)]="rangeDates"
+                            selectionMode="range"
+                            [readonlyInput]="true"
+                            inputId="date"
+                        ></p-calendar>
+                        <label for="date">Choose date</label>
+                    </p-floatLabel>
+                </div>-->
+            </div>
+
+            <div class="flex justify-content-between border-bottom-1 surface-border p-3">
+                <span class="font-semibold text-color-secondary text-xl">Grand Total</span>
+                <span class="text-green-500 text-2xl font-bold"> {{calculateOrderProfit + calculateRepairProfit}}DH</span>
+            </div>
+
+            <div class="p-3">
+                <div class="flex align-items-center justify-content-between py-2">
+                    <div class="flex gap-3 text-lg align-items-center">
+                        <i class="pi pi-money-bill text-color-secondary"></i>
+                        <span class="text-color-secondary">{{ translate.instant('repair') }}</span>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <span class="font-semibold text-base">{{calculateRepairProfit}} dh</span>
+                        <a href="#" class="text-color-secondary">
+                            <i class="pi pi-angle-double-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex align-items-center justify-content-between py-2">
+                    <div class="flex gap-3 text-lg align-items-center">
+                        <i class="pi pi-tablet text-color-secondary"></i>
+                        <span class="text-color-secondary">{{ translate.instant('labor') }}</span>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <span class="font-semibold text-base">{{calculateRepairProfit - calculateEquipmentRepairProfit}} DH</span>
+                        <a href="#" class="text-color-secondary">
+                            <i class="pi pi-angle-double-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex align-items-center justify-content-between py-2">
+                    <div class="flex gap-3 text-lg align-items-center">
+                        <i class="pi pi-tablet text-color-secondary"></i>
+                        <span class="text-color-secondary">{{ translate.instant('equipment') }}</span>
+                    </div>
+                    <div class="flex align-items-center gap-2 pb-4">
+                        <span class="font-semibold text-base">{{calculateEquipmentRepairProfit}} DH</span>
+                        <a href="#" class="text-color-secondary">
+                            <i class="pi pi-angle-double-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex align-items-center border-top-1 surface-border justify-content-between py-4">
+                    <div class="flex gap-3 text-lg align-items-center">
+                        <i class="pi pi-inbox text-color-secondary"></i>
+                        <span class="text-color-secondary">{{ translate.instant('orders') }}</span>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <span class="font-semibold text-base">{{ calculateOrderProfit }} DH</span>
+                        <a href="#" class="text-color-secondary">
+                            <i class="pi pi-angle-double-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-4 p-3">
+        <div class="card">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <span class="font-bold text-3xl text-color">{{ orders.length }}</span>
+                    <p class="mt-2 mb-0 text-2xl text-color-secondary">{{ translate.instant('orders') }}</p>
+                </div>
+                <div>
+                    <img src="assets/layout/images/dashboard/stats-illustration-2.svg"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-4 p-3">
+        <div class="card">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <span class="font-bold text-3xl text-color">{{repairs.length}}</span>
+                    <p class="mt-2 mb-0 text-2xl text-color-secondary">{{ translate.instant('repairs') }}</p>
+                </div>
+                <div>
+                    <img src="assets/layout/images/dashboard/stats-illustration-3.svg"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12 lg:col-4 p-3">
+        <div class="card">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <span class="font-bold text-3xl text-color">{{ payedOrders.length }}</span>
+                    <p class="mt-2 mb-0 text-2xl text-color-secondary">{{ translate.instant('orders-payed') }}</p>
+                </div>
+                <div>
+                    <img src="assets/layout/images/dashboard/stats-illustration-1.svg"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mb-3">
+                <div class="text-900 text-xl font-semibold mb-3 md:mb-0">Products out of stock</div>
+                <div class="inline-flex align-items-center">
+                    <span class="p-input-icon-left flex-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search"
+                               class="w-full" style="border-radius: 2rem"/>
+                    </span>
+                    <button pButton pRipple icon="pi pi-upload" class="p-button-rounded mx-3"
+                            (click)="dt.exportCSV()"></button>
+                </div>
+            </div>
+            <p-table #dt [value]="outOfStock" [columns]="cols" [paginator]="true" [rows]="4" responsiveLayout="scroll"
+                     [globalFilterFields]="['name','category','inventoryStatus']">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="name" style="min-width:12rem" class="white-space-nowrap">Name
+                            <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="category" style="min-width:10rem" class="white-space-nowrap">Category
+                            <p-sortIcon field="category"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="brand" style="min-width:10rem" class="white-space-nowrap">Brand
+                            <p-sortIcon field="brand"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="price" style="min-width:10rem" class="white-space-nowrap">Price
+                            <p-sortIcon field="price"></p-sortIcon>
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.title }}</td>
+                        <td>
+                            <span class="p-column-title">Category</span>
+                            {{ product.category.name }}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Brand</span>
+                            {{ product.brand.name }}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Price</span>
+                            {{ product.price | currency:'MAD' }}
+                        </td>
+                        <!-- <td>
+                             <span class="p-column-title">Status</span>
+                             <span
+                                 [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{ product.inventoryStatus }}</span>
+                         </td>-->
+                        <td style="text-align: center">
+                            <button pButton type="button" icon="pi pi-search"
+                                    class="p-button-outlined p-button-rounded"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+
+</div>

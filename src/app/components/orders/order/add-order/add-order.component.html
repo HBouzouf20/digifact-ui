@@ -1,0 +1,185 @@
+<div class="col-12">
+    <div class="card col-12 p-fluid">
+        <div class="flex items-center gap-3">
+            <h5>{{  title }}</h5>
+            <p-toggleButton
+                (onChange)="changeClient($event)"
+                [onLabel]="'Inconnu'"
+                [offLabel]="'Client Connu'"
+                [onIcon]="'pi pi-question-circle'"
+                offIcon="pi pi-calendar-minus"
+                [style]="{ 'background-color': unknownClient ? '#dc3545' : '#005125', color: 'white' }"
+                styleClass="w-9rem"
+                ariaLabel="Do you confirm"
+            />
+
+        </div>
+
+        <form [formGroup]="order">
+            <div class="p-formgrid grid">
+                <div class="field col">
+                    <label htmlFor="reference">Reference</label>
+                    <div><svg #barcode></svg></div>
+                </div>
+
+            </div>
+
+            <div class="p-formgrid grid">
+                <div class="field col">
+                    <label htmlFor="date">Date</label>
+                    <p-calendar
+                        id="date"
+                        dateFormat="dd/mm/yy"
+                        formControlName="date"
+                    ></p-calendar>
+                    <div
+                        *ngIf="hasError('date', 'required')"
+                        class="p-error block"
+                    >
+                        {{ "validator.field.required" | translate }}
+                    </div>
+                </div>
+                <div class="field col">
+                    <label htmlFor="paymentStatus">Payment Status</label>
+                    <p-dropdown
+                        formControlName="paymentStatus"
+                        [options]="paymentStatus"
+                        optionLabel="value"
+                        placeholder="Select Status"
+                    />
+                </div>
+            </div>
+            <div class="p-formgrid grid">
+                <div class="field col">
+                    <label htmlFor="equipment">Equipment</label>
+
+                    <p-multiSelect
+                        optionValue="sku"
+                        id="equipment"
+                        [options]="equipments"
+                        formControlName="equipment"
+                        optionLabel="title"
+                        display="chip"
+                        [(ngModel)]="selectedEquipments"
+                    >
+                    </p-multiSelect>
+                    <div
+                        *ngIf="hasError('equipment', 'required')"
+                        class="p-error block"
+                    >
+                        {{ "validator.field.required" | translate }}
+                    </div>
+                </div>
+                @if(!unknownClient) {
+                    <div class="field col">
+                        <label htmlFor="client">Client</label>
+                        <div class="flat">
+                            <div class="w-full mr-2">
+                                <p-dropdown
+                                    optionValue="id"
+                                    id="client"
+                                    [options]="clients"
+                                    formControlName="client"
+                                    [filter]="true"
+                                    filterBy="fullname,phone"
+                                    [showClear]="true"
+                                >
+                                    <ng-container>
+                                        <ng-template
+                                            let-selectedItem
+                                            pTemplate="selectedItem"
+                                        >
+                                        <span>
+                                            <strong
+                                            >{{ selectedItem.phone }} - </strong
+                                            >{{ selectedItem.fullname }}
+                                        </span>
+                                        </ng-template>
+                                        <ng-template let-item pTemplate="item">
+                                        <span>
+                                            <strong>{{ item.phone }} - </strong
+                                            >{{ item.fullname | uppercase }}
+                                        </span>
+                                        </ng-template>
+                                    </ng-container>
+                                </p-dropdown>
+                            </div>
+                            <p-button
+                                (click)="addClient()"
+                                icon="pi pi-plus"
+                                [rounded]="true"
+                                severity="primary"
+                            />
+                            <!-- <p-button
+                                (click)="syncClient()"
+                                icon="pi pi-sync"
+                                [rounded]="true"
+                                severity="primary"
+                            /> -->
+                        </div>
+                        <div
+                            *ngIf="hasError('client', 'required')"
+                            class="p-error block"
+                        >
+                            {{ "validator.field.required" | translate }}
+                        </div>
+                    </div>
+                } @else {
+                    <div class="field col">
+                        <label htmlFor="fullname">Fullname</label>
+                        <input
+                            pInputText
+                            id="fullname"
+                            formControlName="fullname"
+                            type="text"
+                        />
+
+                        <div
+                            *ngIf="hasError('fullname', 'required')"
+                            class="p-error block"
+                        >
+                            {{ "validator.field.required" | translate }}
+                        </div>
+                    </div>
+                    <div class="field col">
+                        <label htmlFor="phone">Phone</label>
+                        <input
+                            pInputText
+                            id="phone"
+                            formControlName="phone"
+                            type="text"
+                            [disabled]="true"
+                        />
+
+                        <div
+                            *ngIf="hasError('phone', 'required')"
+                            class="p-error block"
+                        >
+                            {{ "validator.field.required" | translate }}
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="field col" *ngIf="selectedEquipments.length > 0">
+                <app-equipment-detail
+
+                    [equipments]="getEquipments(selectedEquipments)"
+                    [orderValues]="getValues()"
+                    [editOrder]="editMode"
+                    (onChange)="equipmentPrices($event)"
+                    [disableTitle]="true"
+
+                ></app-equipment-detail>
+            </div>
+
+
+            <button
+                pButton
+                pRipple
+                class="p-button-primary save border-round"
+                [label]="'Save' | translate"
+                (click)="addOrder()"
+            ></button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+{
+    "hostName": "${HOST_NAME}",
+    "serverUrl": "${SERVER_URL}",
+    "publicHost": "${PUBLIC_HOST}",
+    "uploadImageHost": "${UPLOAD_IMAGE_HOST}",
+    "hostUrl": "${HOST_URL}",
+    "authUrl": "${AUTH_URL}"
+}

@@ -1,0 +1,25 @@
+<p-dialog [modal]="true"
+          [header]="'client.detail' | translate"
+          [draggable]="true"
+          [(visible)]="showDetail"
+          [style]="{ width: '70%', padding:'0px' }"
+          [contentStyle]="{ 'background-color': '#f9f9f9' }"
+          [styleClass]="'custom-dialog'"
+          [closeOnEscape]="true"
+          [dismissableMask]="true"
+          [resizable]="true">
+    <div class="col-12" >
+        <generator-detail name='client' class="detail" [dataRow]="rowDetail"/>
+    </div>
+</p-dialog>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <generator-table
+            [paginate]="false"
+            (event)="onEvent($event)" name="client" [dataRows]="dataRows" [haveDetails]="false"
+            [canAddItem]="canAddItem()"  [deletable]="canDeleteItem()" [editable]="canUpdateItem()" [haveDetails]="canUpdateItem()"
+                        [mapping]="clientMapping"></generator-table>
+        </div>
+    </div>
+</div>

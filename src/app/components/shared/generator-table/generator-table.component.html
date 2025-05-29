@@ -1,0 +1,529 @@
+<ng-container *ngIf="template === 'default'">
+  <h5>{{ title | translate }}</h5>
+  <!--<div *ngIf="hasHeader" class="mb-3">
+    <p-button type="button" icon="pi pi-chevron-left" (click)="prev()" [disabled]="isFirstPage()" styleClass="p-button-text"></p-button>
+    <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+    <p-button type="button" icon="pi pi-chevron-right" (click)="next()" [disabled]="isLastPage()" styleClass="p-button-text"></p-button>
+</div>-->
+  <p-table
+    #dt1
+    [value]="rows"
+    [columns]="displayedColumns"
+    [dataKey]="id"
+    [rows]="rowsPerPage"
+    [(first)]="first"
+    [loading]="loading"
+    [rowHover]="true"
+    styleClass="p-datatable"
+    [paginator]="paginate"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 8, 10]"
+    [(selection)]="selectedRows"
+    (onRowSelect)="selectRow($event)"
+    (onRowUnselect)="selectRow($event)"
+    onPageChange="onPageChange"
+    editMode="row"
+    [globalFilterFields]="globalFilters"
+    [scrollable]="true"
+
+  >
+    <ng-template pTemplate="caption">
+      <div>
+        <div class="flex justify-content-between flex-column sm:flex-row">
+          <div *ngIf="hasHeader" class="flex flex-wrap">
+            <p-multiSelect
+              *ngIf="cols.length !== 0"
+              [options]="cols"
+              [(ngModel)]="selectedColumns"
+              optionLabel="header"
+              [selectedItemsLabel]="'{0} ' + ('choose.column' | translate)"
+              [style]="{ 'max-width': '200px' }"
+              [placeholder]="'choose' | translate"
+            />
+
+            <button
+              *ngIf="canAddItem"
+              pButton
+              [label]="labelAdd | translate"
+              class="p-button mb-2 ml-1"
+              icon="pi pi-plus"
+              (click)="add()"
+            ></button>
+            <!--button pButton label="Clear" class="p-button-outlined mb-2 ml-1" icon="pi pi-filter-slash"
+                            (click)="clear(dt1)"></button>-->
+            <!-- <p-fileUpload
+                        mode="basic"
+                        [chooseLabel]="'choose.upload' | translate"
+                        chooseIcon="pi pi-upload"
+                        name="demo[]"
+                        url="https://www.primefaces.org/cdn/api/upload.php"
+                        accept="*"
+                        class="p-button-outlined ml-1"
+                    /> -->
+            <!-- <button type="button" [label]="'choose.template' | translate" pButton pRipple icon="pi pi-filter" (click)="dt1.exportCSV({selectionOnly:true})"
+                            class="p-button-outlined mb-2 ml-1" pTooltip="Selection Only" tooltipPosition="bottom"></button> -->
+          </div>
+          <div class="flex flex-container">
+            <div *ngIf="exportable">
+              <button
+                type="button"
+                label=".csv"
+                pButton
+                pRipple
+                icon="pi pi-file"
+                (click)="exportCSV(dt1)"
+                class="mr-2"
+                pTooltip="CSV"
+                tooltipPosition="bottom"
+              ></button>
+              <button
+                type="button"
+                label=".xlsx"
+                pButton
+                pRipple
+                icon="pi pi-file-excel"
+                (click)="exportExcel()"
+                class="p-button-success mr-2"
+                pTooltip="XLS"
+                tooltipPosition="bottom"
+              ></button>
+              <button
+                type="button"
+                label=".pdf"
+                pButton
+                pRipple
+                icon="pi pi-file-pdf"
+                (click)="exportPdf()"
+                class="p-button-warning mr-2"
+                pTooltip="PDF"
+                tooltipPosition="bottom"
+              ></button>
+            </div>
+            <div class="p-input-icon-left mb-2">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                #filter
+                (input)="onGlobalFilter(dt1, $event)"
+                [placeholder]="'search.keyword' | translate"
+                class="w-full"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngIf="hasHeader" style="width: 3rem" (click)="selectRow($event)">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th *ngFor="let col of alwaysDisplay">
+          <div class="flex justify-content-between align-items-center">
+            {{ col.header }}
+          </div>
+        </th>
+        <th *ngFor="let col of selectedColumns">
+          <div class="flex justify-content-between align-items-center">
+            {{ col.header }}
+          </div>
+        </th>
+        <th
+          *ngIf="editable || deletable || haveDetails || addable || status"
+          alignFrozen="right"
+          pFrozenColumn
+          [frozen]="true"
+        >
+          <div class="action">
+            {{ 'Action' | translate }}
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-arows
+      let-editing="editing"
+      let-ri="rowIndex"
+    >
+      <tr [pEditableRow]="arows">
+        <td *ngIf="hasHeader">
+          <p-tableCheckbox [value]="arows"></p-tableCheckbox>
+        </td>
+        <td style="min-width: 10rem" *ngFor="let col of alwaysDisplay">
+          <ng-container *ngIf="isImage(col.field); else elseBlock">
+            <td style="width: 14%; min-width: 10rem">
+              <img
+                [src]="arows[col.field]"
+                [alt]="col.field"
+                width="100"
+                class="shadow-4"
+              />
+            </td>
+          </ng-container>
+
+          <ng-template #elseBlock>
+            <span class="p-column-title">{{ arows[col.field] }}</span>
+              {{ arows[col.field] | truncate:60 }}
+          </ng-template>
+        </td>
+
+        <td *ngFor="let col of selectedColumns">
+          <ng-container *ngIf="isImage(col.field); else elseBlock">
+            <td style="width: 14%; min-width: 10rem">
+              <img
+                [src]="arows[col.field]"
+                [alt]="col.field"
+                width="100"
+                class="shadow-4"
+              />
+            </td>
+          </ng-container>
+
+          <ng-template #elseBlock>
+            @if(col.field ==='paymentStatus' && arows['repairStatus']==='Canceled') {
+                <div [align]="'center'">
+                    <strong>—</strong>
+                </div>
+            }
+           @else if(col.field.toLowerCase().includes('statu')) {
+            <app-tag-status [value]="arows[col.field]"></app-tag-status>
+           }
+            @else{
+            <span class="p-column-title">{{ arows[col.field] }}</span>
+            <div [innerHTML]="arows[col.field] | truncate:60"></div>
+           }
+          </ng-template>
+        </td>
+
+        <td
+          *ngIf="editable || deletable || haveDetails || addable || status"
+          style="min-width: 200px"
+          alignFrozen="right"
+          pFrozenColumn
+          [frozen]="true"
+        >
+          <div class="action">
+            <button
+              *ngIf="editable"
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-success mr-2"
+              (click)="editItem(arows)"
+            ></button>
+            <button
+              *ngIf="deletable"
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger mr-2"
+              (click)="deleteItem(arows)"
+            ></button>
+            <button
+              *ngIf="haveDetails"
+              pButton
+              pRipple
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-secondary mr-2"
+              (click)="showItem(arows)"
+            ></button>
+            <button
+              *ngIf="addable"
+              pButton
+              pRipple
+              icon="pi pi-plus"
+              class="p-button-rounded p-button-primary"
+              (click)="addItem(arows)"
+            ></button>
+            <button
+            title="Edit Status"
+              *ngIf="status"
+              pButton
+              pRipple
+              icon="pi pi-user-edit"
+              class="p-button-rounded p-button-primary"
+              (click)="editStatus(arows)"
+            ></button>
+
+
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">{{ 'data.notfound' | translate }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="loadingbody">
+      <tr>
+        <td colspan="8">{{ 'data.loading' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-container>
+
+<ng-container *ngIf="template !== 'default'">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <div class="my-2">
+        <p-multiSelect
+          *ngIf="cols.length !== 0"
+          [options]="cols"
+          [(ngModel)]="selectedColumns"
+          optionLabel="header"
+          selectedItemsLabel="{0} columns selected"
+          [style]="{ 'max-width': '200px', 'margin-right': '8px' }"
+          [placeholder]="'choose' | translate"
+        />
+
+        <button
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success mr-2"
+          (click)="openNew()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="Delete"
+          icon="pi pi-trash"
+          class="p-button-danger"
+          (click)="deleteSelectedProducts()"
+          [disabled]="!dataRows || !dataRows.length"
+        ></button>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-fileUpload
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="1000000"
+        label="Import"
+        chooseLabel="Import"
+        class="mr-2 inline-block"
+      ></p-fileUpload>
+      <button
+        pButton
+        pRipple
+        label="Export"
+        icon="pi pi-upload"
+        class="p-button-help"
+        (click)="dt2.exportCSV({ selectionOnly: true })"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt2
+    [value]="rows"
+    [columns]="selectedColumns"
+    responsiveLayout="scroll"
+    [dataKey]="id"
+    [rows]="rowsPerPage"
+    [(first)]="first"
+    [loading]="loading"
+    [rowHover]="true"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 8, 10]"
+    [scrollable]="true"
+    onPageChange="onPageChange"
+    editMode="row"
+    [globalFilterFields]="globalFilters"
+    [(selection)]="selectedRows"
+    selectionMode="multiple"
+  >
+    <ng-template pTemplate="caption">
+      <div
+        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+      >
+        <h5>{{ name }} List</h5>
+        <span class="block mt-2 md:mt-0 p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="onGlobalFilter(dt2, $event)"
+            placeholder="Search..."
+            class="w-full sm:w-auto"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th *ngFor="let col of alwaysDisplay" [pSortableColumn]="col.field">
+          {{ col.field }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th *ngFor="let col of selectedColumns" [pSortableColumn]="col.field">
+          {{ col.field }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th alignFrozen="right" pFrozenColumn [frozen]="true">
+          <div class="action">Action</div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-rows
+      let-editing="editing"
+      let-ri="rowIndex"
+    >
+      <tr [pEditableRow]="rows">
+        <td>
+          <p-tableCheckbox [value]="rows"></p-tableCheckbox>
+        </td>
+        <td style="min-width: 10rem" *ngFor="let col of alwaysDisplay">
+          <ng-container *ngIf="isImage(col.field); else elseBlock">
+            <td style="width: 14%; min-width: 10rem">
+              <img
+                [src]="
+                  'https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product-quote.png'
+                "
+                [alt]="col.field"
+                width="100"
+                class="shadow-4"
+              />
+            </td>
+          </ng-container>
+
+          <ng-template #elseBlock>
+            <span class="p-column-title">{{ rows[col.field] }}</span>
+            {{ rows[col.field] }}
+          </ng-template>
+        </td>
+        <td style="min-width: 10rem" *ngFor="let col of selectedColumns">
+          <ng-container *ngIf="isImage(col.field); else elseBlock">
+            <td style="width: 14%; min-width: 10rem">
+              <img
+                [src]="
+                  'https://www.mountaingoatsoftware.com/uploads/blog/2016-09-06-what-is-a-product-quote.png'
+                "
+                [alt]="col.field"
+                width="100"
+                class="shadow-4"
+              />
+            </td>
+          </ng-container>
+
+          <ng-template #elseBlock>
+            <span class="p-column-title">{{ rows[col.field] }}</span>
+            {{ rows[col.field] }}
+          </ng-template>
+        </td>
+        <td
+          style="min-width: 200px"
+          alignFrozen="right"
+          pFrozenColumn
+          [frozen]="true"
+        >
+          <div class="action">
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-success mr-2"
+              (click)="editItem(rows)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-warning mr-2"
+              (click)="deleteItem(rows)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-secondary"
+              (click)="showItem(rows)"
+            ></button>
+          </div>
+        </td>
+        <!-- <td class="text-center"
+                    style="position: -webkit-sticky; position: sticky; right: 0; z-index: 1;">
+                    <div class="actions">
+                        <ng-container *ngIf="!editing">
+                        <button pButton pRipple  type="button" icon="pi pi-eye"
+                                (click)="showDetail(rows)" class="btn p-button-rounded p-button-primary"></button>
+                        <button pButton pRipple pInitEditableRow  type="button"  icon="pi pi-pencil"
+                                class="btn p-button-rounded p-button-secondary"></button>
+                        <button (click)="deleteItem(rows)" pButton pRipple type="button" icon="pi pi-trash"
+                                class="btn p-button-rounded p-button-danger"></button>
+                        </ng-container>
+                        <ng-container *ngIf="editing">
+
+                        <button  pButton pRipple type="button" (click)="saveItem(rows)" pSaveEditableRow icon="pi pi-check"  class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button  pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"  class="p-button-rounded p-button-text p-button-danger"></button>
+                        </ng-container>
+
+
+                    </div>
+                </td> -->
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No item found.</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="loadingbody">
+      <tr>
+        <td colspan="8">Loading data. Please wait.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-container>
+<p-dialog
+  [(visible)]="deleteItemDialog"
+  header="Confirm"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+>
+  <div class="flex align-items-center justify-content-center">
+    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    <span *ngIf="row">Are you sure you want to delete item?</span>
+  </div>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      icon="pi pi-times"
+      class="p-button-text"
+      label="No"
+      (click)="deleteItemDialog = false"
+    ></button>
+    <button
+      pButton
+      pRipple
+      icon="pi pi-check"
+      class="p-button-text"
+      label="Yes"
+      (click)="confirmDelete()"
+    ></button>
+  </ng-template>
+</p-dialog>
+<!-- <p-dialog [(visible)]="deleteItemsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Are you sure you want to delete selected items?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteItemsDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+    </ng-template>
+</p-dialog> -->

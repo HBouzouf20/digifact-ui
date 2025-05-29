@@ -1,0 +1,265 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-table
+                #dt1
+                [value]="orders"
+                dataKey="reference"
+                [tableStyle]="{ 'min-width': '60rem' }"
+                [globalFilterFields]="globalFilters"
+                [scrollable]="true"
+            >
+                <ng-template pTemplate="caption">
+                    <div>
+                        <div
+                            class="flex justify-content-between flex-column sm:flex-row"
+                        >
+                            <div class="flex flex-wrap">
+                                <p-dropdown
+                                    [options]="orderTypes"
+                                    optionLabel="item"
+                                    (onChange)="updateDt($event.value)"
+                                    [autoDisplayFirst]="true"
+                                    [placeholder]="'Select Order type'"
+                                >
+                                </p-dropdown>
+                                <button
+                                    pButton
+                                    [label]="labelAdd | translate"
+                                    class="p-button mb-2 ml-1"
+                                    icon="pi pi-plus"
+                                    (click)="add()"
+                                ></button>
+                            </div>
+                            <div class="flex flex-container">
+                                <div>
+                                    <button
+                                        type="button"
+                                        label=".csv"
+                                        pButton
+                                        pRipple
+                                        icon="pi pi-file"
+                                        (click)="exportCSV(dt1)"
+                                        class="mr-2"
+                                        pTooltip="CSV"
+                                        tooltipPosition="bottom"
+                                    ></button>
+                                    <button
+                                        type="button"
+                                        label=".xlsx"
+                                        pButton
+                                        pRipple
+                                        icon="pi pi-file-excel"
+                                        (click)="exportExcel()"
+                                        class="p-button-success mr-2"
+                                        pTooltip="XLS"
+                                        tooltipPosition="bottom"
+                                    ></button>
+                                    <!-- <button
+                          type="button"
+                          label=".pdf"
+                          pButton
+                          pRipple
+                          icon="pi pi-file-pdf"
+                          (click)="exportPdf()"
+                          class="p-button-warning mr-2"
+                          pTooltip="PDF"
+                          tooltipPosition="bottom"
+                        ></button> -->
+                                </div>
+                                <div class="p-input-icon-left mb-2">
+                                    <i class="pi pi-search"></i>
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        #filter
+                                        (input)="onGlobalFilter(dt1, $event)"
+                                        [placeholder]="
+                                            'search.keyword' | translate
+                                        "
+                                        class="w-full"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 5rem"></th>
+                        <th>Reference</th>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th *ngIf="canUpdateItem() || canDeleteItem() || canEditStatusItem()" alignFrozen="right" pFrozenColumn [frozen]="true">
+                            Action
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-order let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <p-button
+                                type="button"
+                                pRipple
+                                [pRowToggler]="order"
+                                [text]="true"
+                                [rounded]="true"
+                                [plain]="true"
+                                [icon]="
+                                    expanded
+                                        ? 'pi pi-chevron-down'
+                                        : 'pi pi-chevron-right'
+                                "
+                            />
+                        </td>
+                        <td>{{ order.reference }}</td>
+                        <td>
+                            {{ order.client.phone }} -
+                            {{ order.client.fullname }}
+                        </td>
+                        <td>{{ order.orderDate }}</td>
+                        <td>{{ getTotal(order.items) | number: '1.2-2' }} DH</td>
+                        <td>
+                            <app-tag-status
+                                [value]="order.paymentStatus"
+                            />
+                        </td>
+                        <td
+                        *ngIf="(canUpdateItem() || canDeleteItem() || canEditStatusItem())"
+                            style="min-width: 200px"
+                            alignFrozen="right"
+                            pFrozenColumn
+                            [frozen]="true"
+                        >
+                            <div  *ngIf="!isRepair(order)" class="action">
+                                <button
+                                    *ngIf="canUpdateItem()"
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editItem(order)"
+                                ></button>
+                                <button
+                                *ngIf="canDeleteItem()"
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-trash"
+                                    class="p-button-rounded p-button-danger mr-2"
+                                    (click)="deleteItem(order)"
+                                ></button>
+                                <button
+                                title="Edit Status"
+                                *ngIf="canEditStatusItem()"
+                                pButton
+                                pRipple
+                                icon="pi pi-user-edit"
+                                class="p-button-rounded p-button-primary"
+                                (click)="editStatus(order)"
+                                ></button>
+                                <button
+                                    *ngIf="canUpdateItem()"
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-download"
+                                    class="p-button-rounded p-button-primary"
+                                    (click)="download(order)"
+                                ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="rowexpansion" let-order>
+                    <tr>
+                        <td colspan="7">
+                            <app-equipment-detail
+                                [values]="order.items"
+                                [disableAll]="true"
+                            >
+                            </app-equipment-detail>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="8">{{ 'data.notfound' | translate }}</td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                      <td colspan="8">{{ 'data.loading' | translate }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<p-dialog
+  [(visible)]="deleteItemDialog"
+  header="Confirm"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+>
+  <div class="flex align-items-center justify-content-center">
+    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    <span *ngIf="row">Are you sure you want to delete item?</span>
+  </div>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      icon="pi pi-times"
+      class="p-button-text"
+      label="No"
+      (click)="deleteItemDialog = false"
+    ></button>
+    <button
+      pButton
+      pRipple
+      icon="pi pi-check"
+      class="p-button-text"
+      label="Yes"
+      (click)="confirmDelete()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+    [modal]="true"
+    [header]="'order.editStatus' | translate"
+    [draggable]="true"
+    [(visible)]="showEditStatus"
+    [style]="{ minHeight:'25vh'}"
+    [contentStyle]="{ 'background-color': '#f9f9f9' }"
+    [styleClass]="'custom-dialog'"
+    [closeOnEscape]="true"
+    [dismissableMask]="true"
+    [resizable]="true"
+>
+    <div class="modal">
+        <div class="col-12 ">
+                <label htmlFor="paymentStatus">Payment Status</label>
+                <p-dropdown
+                [style]="{marginLeft: '12px'}"
+                    [(ngModel)]="payStatus"
+                    [options]="paymentStatus"
+                    optionLabel="state"
+                    placeholder="Select Status"
+                />
+        </div>
+        <button
+            pButton
+            pRipple
+            class="p-button-primary save border-round"
+            [label]="'Save'"
+            (click)="saveStatus()"
+        ></button>
+    </div>
+
+</p-dialog>

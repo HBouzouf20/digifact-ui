@@ -1,0 +1,71 @@
+<div class="card" [formGroup]="userForm">
+    <span class="text-900 text-xl font-bold mb-4 block">Create User</span>
+    <div class="grid">
+      <div class="col-12 lg:col-2">
+        <div class="text-900 font-medium text-xl mb-3">Profile</div>
+      </div>
+      <div class="col-12 lg:col-10">
+        <div class="grid formgrid p-fluid">
+          <div class="field mb-4 col-12">
+            <label for="username" class="font-medium text-900">Username</label>
+            <input id="username" type="text" pInputText formControlName="username" />
+            <div
+            *ngIf="hasError('username', 'required')"
+            class="p-error block"
+        >
+            {{ "validator.field.required" | translate }}
+        </div>
+        </div>
+
+          <div class="field mb-4 col-12">
+            <label for="password" class="font-medium text-900">Password</label>
+            <input id="password" type="password" pInputText formControlName="password" />
+            <div
+            *ngIf="hasError('password', 'required')"
+            class="p-error block"
+        >
+            {{ "validator.field.required" | translate }}
+        </div>
+        </div>
+
+          <div class="field mb-4 col-12">
+            <label for="email" class="font-medium text-900">E-mail</label>
+            <input id="email" type="email" pInputText formControlName="email" />
+            <div
+            *ngIf="hasError('email', 'required')"
+            class="p-error block"
+        >
+            {{ "validator.field.required" | translate }}
+        </div>
+        </div>
+
+          <div class="field mb-4 col-12">
+            <label for="profile" class="font-medium text-900">Profile</label>
+            <p-dropdown [optionLabel]="'label'" [optionValue]="'state'" [options]="profiles" formControlName="role"></p-dropdown>
+            <div
+            *ngIf="hasError('profile', 'required')"
+            class="p-error block"
+        >
+            {{ "validator.field.required" | translate }}
+        </div>
+        </div>
+
+          <!--
+          <div class="field mb-4 col-12">
+            <label class="font-medium text-900">User status</label>
+            <p-toggleButton
+              [style]="{ 'background-color': !userForm.value.enabled ? '#dc3545' : '#005125', color: 'white' }"
+              onLabel="Enabled"
+              offLabel="Disabled"
+              formControlName="enabled"
+            ></p-toggleButton>
+          </div>
+          -->
+
+          <div class="col-12">
+            <button (click)="createUser()" pButton pRipple label="Create User" class="w-auto mt-3"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

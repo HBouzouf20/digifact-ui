@@ -1,0 +1,77 @@
+<div *ngIf="(equipments && equipments.length) || (values && values.length)">
+    <form *ngIf="priceForm" [formGroup]="priceForm">
+        <div class="prices" formArrayName="prices">
+            <div class="flex titles items-center gap-3 p-2">
+                <div class="flex-1">
+                    <strong> Title </strong>
+                </div>
+                <div class="flex-1">
+                    <strong> Price </strong>
+                </div>
+                <div class="flex-1">
+                    <strong> Qte </strong>
+                </div>
+                <div class="flex-1">
+                    <strong> Total </strong>
+                </div>
+            </div>
+            <div
+                *ngFor="let item of prices.controls; let i = index"
+                [formGroupName]="i"
+                class="flex items-center gap-3 p-2"
+            >
+                <div class="flex-1">
+                    <input
+                        #title
+                        pInputText
+                        id="title"
+                        formControlName="title"
+                    />
+                </div>
+                <div class="flex-1">
+                    <input
+                        #price
+                        pInputText
+                        id="price"
+                        min="0"
+                        mode="currency"
+                        currency="DH"
+                        locale="fr-MA"
+                        type="number"
+                        formControlName="price"
+                        (input)="updateTotal(i)"
+                    />
+                </div>
+                <div class="flex-1">
+                    <input
+                        #qte
+                        pInputText
+                        type="number"
+                        id="qte"
+                        (input)="updateTotal(i)"
+                        formControlName="qte"
+                    />
+                    <div
+                            *ngIf="hasError('qte', 'max',i)"
+                            class="p-error block"
+                        >
+                            {{ "validator.field.max" | translate }}
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <input
+                        #total
+                        pInputText
+                        id="total"
+                        mode="currency"
+                        currency="DH"
+                        locale="fr-MA"
+                        min="0"
+                        type="number"
+                        formControlName="total"
+                    />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

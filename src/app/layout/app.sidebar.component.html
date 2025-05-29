@@ -1,0 +1,18 @@
+<div
+    class="layout-sidebar"
+    (mouseenter)="onMouseEnter()"
+    (mouseleave)="onMouseLeave()"
+>
+   
+    <app-menu-profile
+        #menuProfileStart
+        *ngIf="menuProfilePosition === 'start'"
+    ></app-menu-profile>
+    <div #menuContainer class="layout-menu-container">
+        <app-menu></app-menu>
+    </div>
+    <app-menu-profile
+        #menuProfileEnd
+        *ngIf="menuProfilePosition === 'end'"
+    ></app-menu-profile>
+</div>

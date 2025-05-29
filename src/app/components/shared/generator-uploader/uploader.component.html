@@ -1,0 +1,27 @@
+<p-toast key="fu"></p-toast>
+
+<div class="container">
+    <!-- PrimeNG FileUpload without showing default upload button -->
+    <p-fileUpload
+        name="demo[]"
+        mode="advanced"
+        chooseLabel="Choose"
+        [multiple]="false"
+        (onSelect)="onUpload($event)"
+        [showUploadButton]="false"
+        [showCancelButton]="false"
+        accept="image/*"
+        #fileUpload
+        [chooseStyleClass]="'custom-choose-button'"
+    >
+        <ng-template pTemplate="content">
+            <ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">
+                    {{ file.name | slice:0:20 }}... - {{ file.size }} bytes
+                </li>
+            </ul>
+        </ng-template>
+    </p-fileUpload>
+
+    <!-- Custom clear and choose button placement -->
+</div>

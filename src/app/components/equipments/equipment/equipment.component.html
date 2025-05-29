@@ -1,0 +1,219 @@
+<!--
+<p-dialog [modal]="true"
+          [header]="'equipments.detail' | translate"
+          [draggable]="true"
+          [(visible)]="showDetail"
+          [style]="{ width: '70%', padding:'0px' }"
+          [contentStyle]="{ 'background-color': '#f9f9f9' }"
+          [styleClass]="'custom-dialog'"
+          [closeOnEscape]="true"
+          [dismissableMask]="true"
+          [resizable]="true">
+    <div class="col-12" >
+        <generator-detail name='equipments' class="detail" [dataRow]="rowDetail"/>
+    </div>
+</p-dialog>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <ng-container *ngIf="dataRows?.length > 0; else loading">
+                <generator-table
+                    [paginate]="false"
+                    (event)="onEvent($event)"
+                    name="equipments"
+                    [dataRows]="dataRows"
+                    [canAddItem]="canAddItem()"
+                    [deletable]="canDeleteItem()"
+                    [editable]="canUpdateItem()"
+                    [haveDetails]="canUpdateItem()"
+                    [globalFilters]="['category']"
+                    [mapping]="productMapping">
+                </generator-table>
+            </ng-container>
+            <ng-template #loading>
+                <div class="flex justify-content-center align-items-center" style="height: 200px;">
+                    <i class="pi pi-spinner pi-spin" style="font-size: 2rem"></i>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+-->
+<div style="min-height: 100vh;">
+    <p-card>
+        <ng-container *ngIf="equipments.length > 0; else loading">
+            <p-table
+                #dt2
+                [value]="equipments"
+                dataKey="id"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [paginator]="false"
+                [globalFilterFields]="['title','category', 'brand', 'status']"
+                [tableStyle]="{ 'min-width': '75rem' }"
+            >
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:22%">Title</th>
+                        <th style="width:22%">Quantity</th>
+                        <th style="width:22%">Price</th>
+                        <th style="width:22%">Purchase Price</th>
+                        <th style="width:12%">Category</th>
+                        <th style="width:22%">Brand</th>
+                        <th style="width:22%">Status</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+
+                        <th>
+                            <p-columnFilter
+                                type="text"
+                                field="title"
+                                placeholder="Search by Title"
+                                ariaLabel="Filter Title"/>
+                        </th>
+                        <th style="min-width:10rem">
+                            <div class="flex align-items-center">
+                                Quantity
+                                <p-columnFilter type="numeric" field="quantity" display="menu"  />
+                            </div>
+                        </th>
+                        <th style="min-width:10rem">
+                            <div class="flex align-items-center">
+                                Price
+                                <p-columnFilter type="numeric" field="price" display="menu" currency="MAD" />
+                            </div>
+                        </th>
+                        <th style="min-width:10rem">
+                            <div class="flex align-items-center">
+                                Purchase price
+                                <p-columnFilter type="numeric" field="purchasePrice" display="menu" currency="USD" />
+                            </div>
+                        </th>
+                        <th>
+                            <p-columnFilter field="category.name" matchMode="equals" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown
+                                        [ngModel]="value"
+                                        [options]="categories"
+                                        (onChange)="filter($event.value)"
+                                        placeholder="Select One"
+                                        [showClear]="true">
+
+                                        <ng-template let-option pTemplate="item">
+                                            <p-tag
+                                                [value]="option"
+                                                [severity]="'success'"/>
+                                        </ng-template>
+                                    </p-dropdown>
+
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="brand.name" matchMode="equals" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown
+                                        [ngModel]="value"
+                                        [options]="brands"
+                                        (onChange)="filter($event.value)"
+                                        placeholder="Select One"
+                                        [showClear]="true">
+
+                                        <ng-template let-option pTemplate="item">
+                                            <p-tag
+                                                [value]="option"
+                                                [severity]="'success'"/>
+                                        </ng-template>
+                                    </p-dropdown>
+
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown
+                                        [ngModel]="value"
+                                        [options]="['in-stock','out-of-stock']"
+                                        (onChange)="filter($event.value)"
+                                        placeholder="Select One"
+                                        [showClear]="true">
+
+                                        <ng-template let-option pTemplate="item">
+                                            <p-tag
+                                                [value]="option"
+                                                [severity]="getSeverity(option)"/>
+                                        </ng-template>
+                                    </p-dropdown>
+
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th></th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-equipment>
+                    <tr>
+                        <td>
+                            {{ equipment.title }}
+                        </td>
+                        <td>
+                            {{ equipment.quantity }}
+                        </td>
+                        <td>
+                            {{ equipment.price }}
+                        </td>
+                        <td>
+                            {{ equipment.purchasePrice }}
+                        </td>
+                        <td>
+                            {{ equipment.category.name }}
+                        </td>
+                        <td>
+                            {{ equipment.brand.name }}
+                        </td>
+
+
+                        <td>
+                            <p-tag
+                                [value]="equipment.status"
+                                [severity]="getSeverity(equipment.status)"/>
+                        </td>
+                        <td>
+                            <!-- Update Button -->
+                            <button
+                                class="p-button p-button-text text-green-500"
+                                (click)="editItem(equipment)">
+                                <i class="pi pi-pencil mr-1"></i>
+                            </button>
+
+                            <!--  &lt;!&ndash; Delete Button &ndash;&gt;
+                              <button
+                                  class="p-button p-button-text text-red-500"
+                                  (click)="delete(equipment)">
+                                  <i class="pi pi-trash mr-1"></i>
+                              </button>-->
+
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="5">No customers found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </ng-container>
+        <ng-template #loading>
+            <div class="flex justify-content-center align-items-center" style="height: auto;">
+                <i class="pi pi-spinner pi-spin" style="font-size: 2rem"></i>
+                <h3> Please wait ...</h3>
+            </div>
+        </ng-template>
+
+    </p-card>
+</div>
+

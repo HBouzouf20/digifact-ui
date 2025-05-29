@@ -1,0 +1,31 @@
+<div class="ticket">
+    <div class="ticket-header">
+
+        <svg #barcode></svg>
+    </div>
+
+    <div class="ticket-item">
+      <span>Client Name:</span>
+      <span>{{ ticket.clientName }}</span>
+    </div>
+
+    <div class="ticket-item">
+      <span>Phone:</span>
+      <span>{{ ticket.phone }}</span>
+    </div>
+
+    <div class="ticket-item">
+      <span>Price:</span>
+      <span>{{ ticket.price }} DH</span>
+    </div>
+
+    <div class="ticket-item">
+        <span>Issues:</span>
+        <span>{{ ticket.issues }}</span>
+    </div>
+    <div class="ticket-item">
+        <span>Date:</span>
+        <span>{{ date | date :'dd-MM-yyyy' }}</span>
+    </div>
+  </div>
+

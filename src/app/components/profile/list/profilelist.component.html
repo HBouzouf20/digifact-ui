@@ -1,0 +1,40 @@
+<div class="card">
+    <p-table #dt [value]="users" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" responsiveLayout="scroll"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
+        [globalFilterFields]="['username','email','status']">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                <span class="p-input-icon-left w-full sm:w-20rem flex-order-1 sm:flex-order-0">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Global Search" class="w-full" />
+                </span>
+                <button (click)="navigateToCreateUser()" pButton class="p-button-outlined w-full sm:w-auto flex-order-0 sm:flex-order-1" icon="pi pi-user-plus" label="Add New"></button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="username" class="white-space-nowrap" style="width:25%">Username <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="date" class="white-space-nowrap" style="width:25%">Join Date <p-sortIcon field="date"></p-sortIcon></th>
+                <th pSortableColumn="email" class="white-space-nowrap" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>
+                <th pSortableColumn="role" class="white-space-nowrap" style="width:25%">Role <p-sortIcon field="role"></p-sortIcon></th>
+                <th pSortableColumn="status" class="white-space-nowrap" style="width:25%">Status <p-sortIcon field="status"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{user.username}}</td>
+                    <td>{{user.createdAt}}</td>
+
+                    <td>{{user.email}}</td>
+
+                    <td>
+                    <app-tag-status [value]="user.role"></app-tag-status>
+                    </td>
+                    <td>
+                        <app-tag-status [value]="user.enabled ? 'Enabled' : 'Disabled'"></app-tag-status>
+                    </td>
+
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

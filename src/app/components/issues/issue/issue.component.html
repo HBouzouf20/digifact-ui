@@ -1,0 +1,25 @@
+<p-dialog [modal]="true"
+          [header]="'issue.detail' | translate"
+          [draggable]="true"
+          [(visible)]="showDetail"
+          [style]="{ width: '70%', padding:'0px' }"
+          [contentStyle]="{ 'background-color': '#f9f9f9' }"
+          [styleClass]="'custom-dialog'"
+          [closeOnEscape]="true"
+          [dismissableMask]="true"
+          [resizable]="true">
+    <div class="col-12" >
+        <generator-detail name='issue' class="detail" [dataRow]="rowDetail"/>
+    </div>
+</p-dialog>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <generator-table
+            [paginate]="false"
+            (event)="onEvent($event)" name="issue" [dataRows]="dataRows"
+            [canAddItem]="canAddItem()"  [deletable]="canDeleteItem()" [editable]="canUpdateItem()" [haveDetails]="canUpdateItem()"
+                [mapping]="issueMapping"></generator-table>
+        </div>
+    </div>
+</div>

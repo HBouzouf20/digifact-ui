@@ -1,0 +1,27 @@
+/* Styling for the locked feature card */
+.locked-feature-card {
+    background-color: #f2f2f2; /* Some disabled color */
+    border: 1px solid #ccc; /* Some disabled color */
+    border-radius: 5px;
+    box-shadow: none; /* No shadow for disabled appearance */
+    padding: 1rem; /* Adjust padding as needed */
+    position: relative;
+    pointer-events: none; /* Disable click events */
+  }
+  
+  /* Styling for the lock icon */
+  .locked-icon {
+    font-size: 3rem;
+    color: #999; /* Some gray color */
+    display: block;
+    margin: 0 auto 0.5rem; /* Center the icon */
+  }
+  
+  /* Styling for the locked title */
+  .locked-title {
+    font-size: 1.25rem;
+    text-align: center;
+    margin: 0;
+    color: #999; /* Some gray color */
+  }
+  

@@ -1,0 +1,4 @@
+li[aria-label='nav'] :hover {
+    font-weight: bold;
+    text-decoration: underline;
+}

@@ -1,0 +1,23 @@
+<div class="flex-container">
+    <div class="title">
+        {{ title | translate }}
+    </div>
+    <div
+        *ngIf="title.toLowerCase().includes('image'); else simpleInput"
+        class="value"
+    >
+        <img
+            [src]="value"
+            [alt]="title"
+            width="100"
+            class="shadow-4"
+        />
+    </div>
+    <ng-template #simpleInput>
+        <div class="value">
+            {{ value }}
+        </div>
+    </ng-template>
+</div>
+
+

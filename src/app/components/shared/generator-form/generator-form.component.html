@@ -1,0 +1,403 @@
+<ng-container *ngIf="template == 'default'">
+  <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+    <div [ngClass]="{ 'card p-5': !isModal }">
+      <ng-container *ngIf="!isEmptyObject(formData); else create">
+        <h5 class="mb-5">
+          {{ !isModal ? (title + '.edit' | translate) : '' }}
+        </h5>
+      </ng-container>
+      <ng-template #create>
+        <h5 class="mb-5">{{ !isModal ? (title + '.add' | translate) : '' }}</h5>
+      </ng-template>
+      <div class="p-fluid p-formgrid grid">
+        <ng-container
+          [ngSwitch]="formFields[key].type"
+          *ngFor="let key of objectKeys(formFields)"
+        >
+          <input
+            *ngSwitchCase="'hidden'"
+            type="hidden"
+            id="{{ key }}"
+            formControlName="{{ key }}"
+          />
+          <div *ngSwitchCase="'file'" class="md:col-6">
+            <div class="field">
+              <label [for]="key">{{
+                title + '.upload.image' | translate
+              }}</label>
+              <generator-uploader
+                id="{{ key }}"
+                (fileSelected)="onFileChange($event, key)"
+              ></generator-uploader>
+            </div>
+          </div>
+          <div *ngSwitchCase="'text'" class="col-12 md:col-6">
+            <label [for]="key">{{ formFields[key].label | translate }}</label>
+            <input
+              type="text"
+              id="{{ key }}"
+              pInputText
+              formControlName="{{ key }}"
+            />
+            <div *ngIf="hasError(key, 'required')" class="p-error block">
+              {{ 'validator.field.required' | translate }}
+            </div>
+            <div *ngIf="hasError(key, 'minlength')" class="p-error block">
+              {{ 'validator.minimum.length' | translate }} 3
+            </div>
+            <div *ngIf="hasError(key, 'maxlength')" class="p-error block">
+              {{ 'validator.maximum.length' | translate }} 200
+            </div>
+          </div>
+          <div *ngSwitchCase="'number'" class="col-12 md:col-6">
+            <label [for]="key">{{ formFields[key].label | translate }}</label>
+            <input
+              id="{{ key }}"
+              pInputText
+              type="number"
+              formControlName="{{ key }}"
+            />
+            <div *ngIf="hasError(key, 'required')" class="p-error block">
+              {{ 'validator.field.required' | translate }}
+            </div>
+          </div>
+          <div *ngSwitchCase="'boolean'" class="col-12 lg:col-4 field">
+              <label class="mr-3" [for]="key">{{ formFields[key].label }}</label>
+            <p-checkbox
+              id="{{ key }}"
+              binary="true"
+              formControlName="{{ key }}"
+            ></p-checkbox>
+            <div *ngIf="hasError(key, 'required')" class="p-error block">
+              {{ 'validator.field.required' | translate }}
+            </div>
+          </div>
+          <div *ngSwitchCase="'date'" class="col-12 md:col-6">
+            <label [for]="key">{{ formFields[key].label | translate }}</label>
+            <p-calendar
+              id="{{ key }}"
+              dateFormat="dd/mm/yy"
+              formControlName="{{ key }}"
+            ></p-calendar>
+            <div *ngIf="hasError(key, 'required')" class="p-error block">
+              {{ 'validator.field.required' | translate }}
+            </div>
+          </div>
+          <div *ngSwitchCase="'phone'" class="col-12 md:col-6">
+            <label [for]="key">{{ formFields[key].label | translate }}</label>
+            <input
+              id="{{ key }}"
+              pInputText
+              type="text"
+              formControlName="{{ key }}"
+            />
+            <div *ngIf="hasError(key, 'required')" class="p-error block">
+              {{ 'validator.field.required' | translate }}
+            </div>
+          </div>
+          <div *ngSwitchCase="'dropdown'" class="col-12 md:col-6">
+            <label [for]="key">{{ formFields[key].label | translate }} </label>
+
+            <p-dropdown
+              [optionValue]="
+                !isEnumDropDown(formFields[key].options) ? 'id' : ''
+              "
+              (onChange)="showOnChange($event)"
+              [autoDisplayFirst]="!isEnumDropDown(formFields[key].options)"
+              id="{{ key }}"
+              [options]="formFields[key].options"
+              [filter]="!isEnumDropDown(formFields[key].options)"
+              formControlName="{{ key }}"
+            >
+              <ng-container *ngIf="!isEnumDropDown(formFields[key].options)">
+                <ng-template let-selectedItem pTemplate="selectedItem">
+                  <span *ngIf="selectedItem.value">
+                    {{ selectedItem.value }}
+                  </span>
+                  <span *ngIf="!selectedItem.value"> {{ selectedItem }} </span>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <span *ngIf="item.value">
+                    <strong>{{ item.value }} </strong>
+                  </span>
+                  <span *ngIf="!item.value"> {{ item }} </span>
+                </ng-template>
+              </ng-container>
+            </p-dropdown>
+            <div *ngIf="hasError(key, 'required')" class="p-error block">
+              {{ 'validator.field.required' | translate }}
+            </div>
+          </div>
+          <div *ngSwitchCase="'table'" class="col-12">
+            <ng-container *ngIf="tableModels.length == 1; else tabs">
+              <div *ngFor="let item of tableModels" class="card">
+                <generator-table
+                  [canAddItem]="false"
+                  (onSelect)="selectItems($event, formFields[key].name)"
+                  [id]="'referenceNumber'"
+                  [haveDetails]="false"
+                  [exportable]="false"
+                  [addable]="false"
+                  [deletable]="false"
+                  [editable]="false"
+                  [name]="formFields[key].name"
+                  [dataRows]="item[formFields[key].name].dataRows | async"
+                  [mapping]="
+                    getModelArrayMapping(item[formFields[key].name].skeleton)
+                  "
+                ></generator-table>
+              </div>
+            </ng-container>
+            <ng-template #tabs>
+              <p-tabView>
+                <p-tabPanel
+                  *ngFor="let item of tableModels"
+                  [header]="formFields[key].name"
+                >
+                  <generator-table
+                    [canAddItem]="false"
+                    (onSelect)="selectItems($event, formFields[key].name)"
+                    [id]="'referenceNumber'"
+                    [haveDetails]="false"
+                    [exportable]="false"
+                    [addable]="false"
+                    [deletable]="false"
+                    [editable]="false"
+                    [name]="formFields[key].name"
+                    [dataRows]="item[formFields[key].name].dataRows | async"
+                    [mapping]="
+                      getModelArrayMapping(item[formFields[key].name].skeleton)
+                    "
+                  ></generator-table>
+                </p-tabPanel>
+              </p-tabView>
+            </ng-template>
+          </div>
+        </ng-container>
+      </div>
+      <button
+        class="mt-5"
+        pButton
+        [label]="'save' | translate"
+        icon="pi pi-check"
+        size="large"
+      ></button>
+    </div>
+  </form>
+</ng-container>
+
+<ng-container *ngIf="template !== 'default'">
+  <div class="card">
+    <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+      <span class="block text-900 font-bold text-xl mb-4">{{
+        !isModal ? 'Add ' + title : ''
+      }}</span>
+      <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+        <div class="col-12 lg:col-8">
+          <div class="grid formgrid">
+            <ng-container
+              [ngSwitch]="formFields[key].type"
+              *ngFor="let key of objectKeys(formFields)"
+            >
+              <div *ngSwitchCase="'text'" class="col-12 lg:col-4 field">
+                <label [for]="key">{{ formFields[key].label }}</label>
+                <input
+                  type="text"
+                  id="{{ key }}"
+                  pInputText
+                  formControlName="{{ key }}"
+                />
+                <div *ngIf="hasError(key, 'required')" class="p-error block">
+                  {{ 'validator.field.required' | translate }}
+                </div>
+                <div *ngIf="hasError(key, 'minlength')" class="p-error block">
+                  {{ 'validator.minimum.length' | translate }} 3
+                </div>
+                <div *ngIf="hasError(key, 'maxlength')" class="p-error block">
+                  {{ 'validator.maximum.length' | translate }} 200
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'number'" class="col-12 lg:col-4 field">
+                <label [for]="key">{{ formFields[key].label }}</label>
+                <input
+                  id="{{ key }}"
+                  pInputText
+                  type="number"
+                  formControlName="{{ key }}"
+                />
+                <div *ngIf="hasError(key, 'required')" class="p-error block">
+                  {{ 'validator.field.required' | translate }}
+                </div>
+              </div>
+              <div *ngSwitchCase="'boolean'" class="col-12 lg:col-4 field">
+                <p-checkbox
+                  id="{{ key }}"
+                  binary="true"
+                  formControlName="{{ key }}"
+                  ></p-checkbox>
+                  <label class="ml-2" [for]="key">{{ formFields[key].label }}</label>
+                  <div *ngIf="hasError(key, 'required')" class="p-error block">
+                  {{ 'validator.field.required' | translate }}
+                </div>
+              </div>
+              <div *ngSwitchCase="'date'" class="col-12 lg:col-4 field">
+                <label [for]="key">{{ formFields[key].label }}</label>
+                <p-calendar
+                  id="{{ key }}"
+                  dateFormat="dd/mm/yy"
+                  formControlName="{{ key }}"
+                ></p-calendar>
+                <div *ngIf="hasError(key, 'required')" class="p-error block">
+                  {{ 'validator.field.required' | translate }}
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container
+              [ngSwitch]="formFields[key].type"
+              *ngFor="let key of objectKeys(formFields)"
+            >
+              <div *ngSwitchCase="'description'" class="col-12 field">
+                <label [for]="key">{{ formFields[key].label }}</label>
+                <p-editor
+                  id="{{ key }}"
+                  formControlName="{{ key }}"
+                  [style]="{ height: '250px' }"
+                ></p-editor>
+              </div>
+              <div *ngSwitchCase="'file'" class="col-12 field">
+                <p-fileUpload
+                  #fileUploader
+                  name="demo[]"
+                  url="./upload.php"
+                  (onUpload)="onUpload($event)"
+                  [customUpload]="true"
+                  [multiple]="true"
+                  (onSelect)="onUpload($event)"
+                  accept="image/*"
+                  [showUploadButton]="true"
+                  [showCancelButton]="false"
+                  [auto]="true"
+                  styleClass="border-1 surface-border surface-card border-round"
+                >
+                  <ng-template pTemplate="content">
+                    <div
+                      class="h-15rem overflow-y-auto py-3 border-round"
+                      style="cursor: copy"
+                      (click)="
+                        fileUploader.advancedFileInput.nativeElement.click()
+                      "
+                    >
+                      <div
+                        *ngIf="!images.length"
+                        class="flex flex-column w-full h-full justify-content-center align-items-center"
+                      >
+                        <i class="pi pi-file text-4xl text-primary"></i>
+                        <span
+                          class="block font-semibold text-900 text-lg mt-3"
+                          >{{ 'drop.image' | translate }}</span
+                        >
+                      </div>
+                      <div
+                        class="flex flex-wrap gap-3 border-round"
+                        *ngIf="images.length"
+                      >
+                        <div
+                          *ngFor="let file of images; let i = index"
+                          class="h-full relative w-7rem h-7rem border-3 border-transparent border-round hover:bg-primary transition-duration-100 cursor-auto"
+                          (mouseenter)="onImageMouseOver(file)"
+                          (mouseleave)="onImageMouseLeave(file)"
+                          style="padding: 1px"
+                        >
+                          <img
+                            [src]="file.objectURL"
+                            class="w-full h-full border-round shadow-2"
+                            [alt]="file.name"
+                          />
+                          <button
+                            [id]="file.name"
+                            #buttonEl
+                            pButton
+                            pRipple
+                            type="button"
+                            icon="pi pi-times"
+                            class="p-button-rounded p-button-primary text-sm absolute justify-content-center align-items-center cursor-pointer w-2rem h-2rem"
+                            style="top: -10px; right: -10px; display: none"
+                            (click)="
+                              $event.stopPropagation(); removeImage(file)
+                            "
+                          ></button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </p-fileUpload>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
+          <ng-container
+            [ngSwitch]="formFields[key].type"
+            *ngFor="let key of objectKeys(formFields)"
+          >
+            <div
+              *ngSwitchCase="'dropdown'"
+              class="border-1 surface-border border-round"
+            >
+              <label
+                [for]="key"
+                class="text-900 font-bold block border-bottom-1 surface-border p-3"
+                >{{ formFields[key].label }}</label
+              >
+              <div class="p-3">
+                <p-dropdown
+                  id="{{ key }}"
+                  [options]="formFields[key].options"
+                  [autoDisplayFirst]="false"
+                  (onChange)="showOnChange($event)"
+                  formControlName="{{ key }}"
+                >
+                  <ng-template let-selectedItem pTemplate="selectedItem">
+                    <span *ngIf="selectedItem.value">
+                      {{ selectedItem.value }}
+                    </span>
+                    <span *ngIf="!selectedItem.value">
+                      {{ selectedItem }}
+                    </span>
+                  </ng-template>
+                  <ng-template let-item pTemplate="item">
+                    <span *ngIf="item.value">
+                      {{ item.value }}
+                    </span>
+                    <span *ngIf="!item.value"> {{ item }} </span>
+                  </ng-template>
+                </p-dropdown>
+              </div>
+            </div>
+          </ng-container>
+
+          <div
+            class="flex flex-column sm:flex-row justify-content-between align-items-center gap-3 py-2"
+          >
+            <button
+              pButton
+              pRipple
+              class="p-button-danger flex-1 p-button-outlined"
+              [label]="'Discard' | translate"
+              icon="pi pi-fw pi-trash"
+            ></button>
+            <button
+              pButton
+              pRipple
+              class="p-button-primary flex-1 border-round"
+              [label]="'Save' | translate"
+              icon="pi pi-fw pi-check"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-container>

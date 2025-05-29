@@ -1,0 +1,65 @@
+<div class="card">
+    <div class="grid mt-4">
+        <div class="col-12 lg:col-2">
+            <div class="text-900 font-medium text-xl mb-3">Settings</div>
+            <div *ngIf="form.value.logo" style="margin-top: 10px;">
+                <p>Current Logo:</p>
+                <img
+                    [src]="form.value.logo"
+                    alt="Logo"
+                    style="max-width: 150px; max-height: 150px; border: 1px solid #ddd; padding: 5px;"
+                />
+            </div>
+
+        </div>
+
+        <form [formGroup]="form" class="col-12 lg:col-10">
+            <div class="grid formgrid p-fluid">
+                <div class="field mb-4 col-12">
+                    <label for="logo" class="font-medium text-900">Logo</label>
+                    <generator-uploader
+                    id="logo"
+                    (fileSelected)="onFileChange($event)"
+              ></generator-uploader>
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                    <label for="phone" class="font-medium text-900">Fullname</label>
+                    <input formControlName="fullname" id="fullname" type="text" pInputText>
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                    <label for="title" class="font-medium text-900">Store</label>
+                    <input formControlName="title" id="title" type="text" pInputText>
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                    <label for="phone" class="font-medium text-900">Phone</label>
+                    <input formControlName="phone" id="phone" type="tel" pInputText>
+                </div>
+                <div class="field mb-4 col-12 md:col-3">
+                    <label for="email" class="font-medium text-900">Email</label>
+                    <input formControlName="email" id="email" type="text" pInputText>
+                </div>
+                <div class="field mb-4 col-12">
+                    <label for="Address" class="font-medium text-900">Address</label>
+                    <textarea formControlName="address" id="Address" type="text" pInputTextarea rows="3" [autoResize]="true"></textarea>
+                </div>
+
+                <div class="col-12" formGroupName="socialMedia">
+                    <label for="socialMedias" class="font-medium text-900">Social Medias</label>
+                    <div class="mt-4">
+                         @for(media of socialMedias; track media.name) {
+                            <p-inputGroup class="mb-2">
+                                <p-inputGroupAddon>
+                                    <i [class]="media.icon"></i>
+                                </p-inputGroupAddon>
+                                <input [formControlName]="media.name" pInputText [placeholder]="media.name | titlecase" />
+                            </p-inputGroup>
+                         }
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button (click)="onSubmit()" pButton pRipple label="Save" class="w-auto mt-3"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

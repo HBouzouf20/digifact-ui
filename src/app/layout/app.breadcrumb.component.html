@@ -1,0 +1,15 @@
+<div class="layout-breadcrumb-container">
+    <nav class="layout-breadcrumb mx-2 my-2">
+        <ol>
+            <li aria-label="nav" [title]="'home' | translate" style="cursor: pointer;" routerLink="/"><i class="pi pi-home"></i></li>
+            <ng-template ngFor let-item let-last="last" [ngForOf]="breadcrumbs$ | async">
+                <li><i class="pi pi-angle-right"></i></li>
+                <li aria-label="nav" [title]="item.label" style="cursor: pointer;" [routerLink]="item.url"><span>{{item.label | translate}}</span></li>
+            </ng-template>
+        </ol>
+        
+    </nav>
+    <!-- {{
+        breadcrumbs$ | async | json
+    }} -->
+</div>
