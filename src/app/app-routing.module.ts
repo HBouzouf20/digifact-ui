@@ -101,6 +101,24 @@ const routes: Routes = [
                     ),
                 canActivate: [permissionGuard],
             },
+            {
+                path: 'invoices',
+                data: { module : 'invoice' },
+                loadChildren: () =>
+                    import('src/app/components/invoice/invoice.module').then(
+                        (m) => m.InvoiceModule
+                    ),
+                canActivate: [permissionGuard],
+            },
+            {
+                path: 'invoices',
+                data: { module : 'invoice' },
+                loadChildren: () =>
+                    import('src/app/components/invoice/invoice.module').then(
+                        (m) => m.InvoiceModule
+                    ),
+                canActivate: [permissionGuard],
+            },
 
             {
                 path: 'issues',

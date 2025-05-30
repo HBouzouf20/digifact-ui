@@ -33,8 +33,7 @@ export class OrderComponent implements OnInit, OnChanges,PermissionActions {
     loading: boolean = false;
     labelAdd = 'Add Order';
     orders: any = [];
-    saleOrder: any = [];
-    repairOrder: any = [];
+
     user : User | null = null;
     expandedRows = {};
     globalFilters: string[] = [
@@ -100,21 +99,14 @@ export class OrderComponent implements OnInit, OnChanges,PermissionActions {
         });
     }
 
-    isRepair(repair: any) {
-        return this.repairOrder.includes(repair);
-    }
+
 
     updateDt(event: any) {
         switch (event.value) {
             case 'all':
-                this.orders = [...this.saleOrder, ...this.repairOrder];
+                this.orders = this.orderService.getAllOrders();
                 break;
-            case 'repair':
-                this.orders = [...this.repairOrder];
-                break;
-            case 'order':
-                this.orders = [...this.saleOrder];
-                break;
+
         }
     }
 
@@ -209,9 +201,12 @@ export class OrderComponent implements OnInit, OnChanges,PermissionActions {
 
     ngOnInit(): void {
         this.user = this.auth.getSignedUser();
-        const orders$ = this.orderService.getAllOrders();
-
-
+        this.orderService.getAllOrders().pipe(
+            take(1),
+            tap(source => {
+                this.orders = source;
+            })
+        ).subscribe();
     }
     canAddItem() {
         return hasPermission(this.user!!, "create:orders")

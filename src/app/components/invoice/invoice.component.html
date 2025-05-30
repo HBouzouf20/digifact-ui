@@ -24,13 +24,13 @@
 					<span>C1613</span>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
 
 	<div class="mt-5 mb-8 flex flex-column">
-		<div class="mb-3 text-2xl font-medium">BILL TO</div>
-		<span class="mb-2">Claire Williams, 148 Hope Lane</span>
-		<span>Palo Alto, CA 94304.</span>
+		<div class="mb-3 text-2xl font-medium">{{ client.fullname }}</div>
+		<span class="mb-2">{{client.address}}</span>
+		<span>{{ client.phone }}</span>
 	</div>
 
 	<div class="overflow-x-auto">

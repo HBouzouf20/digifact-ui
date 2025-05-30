@@ -44,9 +44,9 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
     status: any;
     currentClient: Client = new ClientImpl();
     editMode = false;
-    paymentStatus: any = [
-        { value: 'Payed', state: 'PAYED' },
-        { value: 'Not payed', state: 'NOT_PAYED' },
+    confirmed: any = [
+        { value: 'Confirmed', state: 'true' },
+        { value: 'Pending', state: 'false' },
     ];
     brands: any;
     @Input()
@@ -85,6 +85,7 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
         paymentStatus: [{ value: 'Not payed', state: 'NOT_PAYED' }],
         fullname: ['', Validators.required],
         phone: ['', Validators.required],
+        confirmed: [false],
     });
 
     ngOnInit() {
@@ -137,8 +138,8 @@ export class AddOrderComponent implements OnInit, AfterViewInit {
 
             phone: this.formData.client.phone,
             fullname: this.formData.client.fullname,
-            paymentStatus: this.paymentStatus.find(
-                (p: any) => p.value === this.formData.paymentStatus
+            confirmed: this.confirmed.find(
+                (p: any) => p.value === this.formData.confirmed
             ),
         });
     }

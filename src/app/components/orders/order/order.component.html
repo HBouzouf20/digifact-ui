@@ -93,7 +93,7 @@
                         <th>Date</th>
                         <th>Total</th>
                         <th>Status</th>
-                        <th *ngIf="canUpdateItem() || canDeleteItem() || canEditStatusItem()" alignFrozen="right" pFrozenColumn [frozen]="true">
+                        <th alignFrozen="right" pFrozenColumn [frozen]="true">
                             Action
                         </th>
                     </tr>
@@ -124,17 +124,16 @@
                         <td>{{ getTotal(order.items) | number: '1.2-2' }} DH</td>
                         <td>
                             <app-tag-status
-                                [value]="order.paymentStatus"
+                                [value]="order.confirmed ? 'Confirmed' : 'Pending'"
                             />
                         </td>
                         <td
-                        *ngIf="(canUpdateItem() || canDeleteItem() || canEditStatusItem())"
                             style="min-width: 200px"
                             alignFrozen="right"
                             pFrozenColumn
                             [frozen]="true"
                         >
-                            <div  *ngIf="!isRepair(order)" class="action">
+                            <div class="action">
                                 <button
                                     *ngIf="canUpdateItem()"
                                     pButton
@@ -144,7 +143,7 @@
                                     (click)="editItem(order)"
                                 ></button>
                                 <button
-                                *ngIf="canDeleteItem()"
+                                    *ngIf="canDeleteItem()"
                                     pButton
                                     pRipple
                                     icon="pi pi-trash"
@@ -152,13 +151,13 @@
                                     (click)="deleteItem(order)"
                                 ></button>
                                 <button
-                                title="Edit Status"
-                                *ngIf="canEditStatusItem()"
-                                pButton
-                                pRipple
-                                icon="pi pi-user-edit"
-                                class="p-button-rounded p-button-primary"
-                                (click)="editStatus(order)"
+                                    title="Edit Status"
+                                    *ngIf="canEditStatusItem()"
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-user-edit"
+                                    class="p-button-rounded p-button-primary"
+                                    (click)="editStatus(order)"
                                 ></button>
                                 <button
                                     *ngIf="canUpdateItem()"
@@ -169,6 +168,7 @@
                                     (click)="download(order)"
                                 ></button>
                             </div>
+
                         </td>
                     </tr>
                 </ng-template>
@@ -187,13 +187,13 @@
 
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                      <td colspan="8">{{ 'data.notfound' | translate }}</td>
+                        <td colspan="8">{{ 'data.notfound' | translate }}</td>
                     </tr>
                 </ng-template>
 
                 <ng-template pTemplate="loadingbody">
                     <tr>
-                      <td colspan="8">{{ 'data.loading' | translate }}</td>
+                        <td colspan="8">{{ 'data.loading' | translate }}</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -201,33 +201,33 @@
     </div>
 </div>
 <p-dialog
-  [(visible)]="deleteItemDialog"
-  header="Confirm"
-  [modal]="true"
-  [style]="{ width: '450px' }"
+    [(visible)]="deleteItemDialog"
+    header="Confirm"
+    [modal]="true"
+    [style]="{ width: '450px' }"
 >
-  <div class="flex align-items-center justify-content-center">
-    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-    <span *ngIf="row">Are you sure you want to delete item?</span>
-  </div>
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      pRipple
-      icon="pi pi-times"
-      class="p-button-text"
-      label="No"
-      (click)="deleteItemDialog = false"
-    ></button>
-    <button
-      pButton
-      pRipple
-      icon="pi pi-check"
-      class="p-button-text"
-      label="Yes"
-      (click)="confirmDelete()"
-    ></button>
-  </ng-template>
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="row">Are you sure you want to delete item?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            pRipple
+            icon="pi pi-times"
+            class="p-button-text"
+            label="No"
+            (click)="deleteItemDialog = false"
+        ></button>
+        <button
+            pButton
+            pRipple
+            icon="pi pi-check"
+            class="p-button-text"
+            label="Yes"
+            (click)="confirmDelete()"
+        ></button>
+    </ng-template>
 </p-dialog>
 
 <p-dialog
@@ -244,14 +244,14 @@
 >
     <div class="modal">
         <div class="col-12 ">
-                <label htmlFor="paymentStatus">Payment Status</label>
-                <p-dropdown
+            <label htmlFor="paymentStatus">Payment Status</label>
+            <p-dropdown
                 [style]="{marginLeft: '12px'}"
-                    [(ngModel)]="payStatus"
-                    [options]="paymentStatus"
-                    optionLabel="state"
-                    placeholder="Select Status"
-                />
+                [(ngModel)]="payStatus"
+                [options]="paymentStatus"
+                optionLabel="state"
+                placeholder="Select Status"
+            />
         </div>
         <button
             pButton
